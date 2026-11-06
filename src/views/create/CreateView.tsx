@@ -1,5 +1,7 @@
+import UserForm from "../../components/userform/UserForm";
+
 function CreateView() {
-  return <p>Erstellen</p>;
+  return <UserForm />;
 }
 
 export default CreateView;
