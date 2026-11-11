@@ -1,10 +1,12 @@
 import type { ChangeEvent } from "react";
+import type { ValidationError } from "../../types/ValidationError";
 
 type SelectInputProps = {
   id: string;
   label: string;
   value: string;
   options: string[];
+  error: ValidationError;
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 };
 
@@ -13,6 +15,7 @@ function SelectInput({
   label,
   value,
   options,
+  error,
   onChange,
 }: SelectInputProps) {
   return (
@@ -33,6 +36,9 @@ function SelectInput({
           </option>
         ))}
       </select>
+      {error.isError && (
+        <p className="form-field__error">{error.errorMessage}</p>
+      )}
     </div>
   );
 }

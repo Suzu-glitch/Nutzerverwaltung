@@ -8,3 +8,5 @@ export type User = {
   phoneNumber: string;
   website: string;
 };
+
+export type UserFormData = Omit<User, "id">;

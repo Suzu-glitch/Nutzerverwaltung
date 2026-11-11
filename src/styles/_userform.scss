@@ -1,0 +1,42 @@
+@use "variables" as *;
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 300px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &__label {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  &__input {
+    padding: 12px;
+    border: 1px solid $color-border-light;
+    border-radius: 8px;
+    background-color: $color-input;
+    font-size: 14px;
+  }
+
+  &__error {
+    color: $color-delete;
+    font-size: 12px;
+  }
+}
+
+.submit-button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: $color-submit;
+  color: #ffffff;
+  font-size: 12px;
+  cursor: pointer;
+}
