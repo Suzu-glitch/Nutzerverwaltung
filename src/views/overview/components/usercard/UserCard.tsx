@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   FaAddressBook,
@@ -8,6 +9,7 @@ import {
   FaVenusMars,
 } from "react-icons/fa";
 import DeleteButton from "../../../../components/button/DeleteButton";
+import { UserContext } from "../../../../context/UserContext";
 import type { User } from "../../../../types/User";
 
 const USER_IMAGE_URL = "https://randomuser.me/api/portraits/men/75.jpg";
@@ -17,9 +19,15 @@ type UserCardProps = {
 };
 
 function UserCard({ user }: UserCardProps) {
+  const { dispatch } = useContext(UserContext);
   const formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString(
     "de-DE",
   );
+
+  function handleDeleteUser() {
+    dispatch({ type: "REMOVE_USER", id: user.id });
+    alert("Nutzer wurde gelöscht");
+  }
 
   return (
     <article className="user-card">
@@ -53,7 +61,7 @@ function UserCard({ user }: UserCardProps) {
           </div>
         </div>
       </Link>
-      <DeleteButton />
+      <DeleteButton onClick={handleDeleteUser} />
     </article>
   );
 }
