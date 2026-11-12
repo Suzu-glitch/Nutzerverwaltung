@@ -1,110 +1,69 @@
-import useFormInput from "../../hooks/useFormInput";
-import TextInput from "../input/TextInput";
-import DateInput from "../input/DateInput";
-import SelectInput from "../input/SelectInput";
-import SubmitButton from "../button/SubmitButton";
-import type { UserFormData } from "../../types/User";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import {
+  FaAddressBook,
+  FaBirthdayCake,
+  FaEnvelope,
+  FaGlobe,
+  FaPhoneAlt,
+  FaVenusMars,
+} from "react-icons/fa";
+import DeleteButton from "../../../../components/button/DeleteButton";
+import { UserContext } from "../../../../context/UserContext";
+import type { User } from "../../../../types/User";
 
-const GENDER_OPTIONS = ["Männlich", "Weiblich", "Divers"];
-const MISSING_INFORMATION_MESSAGE = "Bitte Informationen ergänzen";
+const USER_IMAGE_URL = "https://randomuser.me/api/portraits/men/75.jpg";
 
-type UserFormProps = {
-  user?: UserFormData;
-  onSubmit: (userData: UserFormData) => void;
+type UserCardProps = {
+  user: User;
 };
 
-function UserForm({ user, onSubmit }: UserFormProps) {
-  const username = useFormInput(user?.username ?? "", true);
-  const dateOfBirth = useFormInput(user?.dateOfBirth ?? "", true);
-  const gender = useFormInput(user?.gender ?? "", true);
-  const email = useFormInput(user?.email ?? "", true);
-  const postalAddress = useFormInput(user?.postalAddress ?? "", true);
-  const phoneNumber = useFormInput(user?.phoneNumber ?? "", true);
-  const website = useFormInput(user?.website ?? "", true);
+function UserCard({ user }: UserCardProps) {
+  const { dispatch } = useContext(UserContext);
+  const formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString(
+    "de-DE",
+  );
 
-  function handleSubmitUser() {
-    const validationResults = [
-      username.validate(),
-      dateOfBirth.validate(),
-      gender.validate(),
-      email.validate(),
-      postalAddress.validate(),
-      phoneNumber.validate(),
-      website.validate(),
-    ];
-    const isFormValid = validationResults.every((isValid) => isValid);
-
-    if (!isFormValid) {
-      alert(MISSING_INFORMATION_MESSAGE);
-      return;
-    }
-
-    onSubmit({
-      username: username.value,
-      dateOfBirth: dateOfBirth.value,
-      gender: gender.value,
-      email: email.value,
-      postalAddress: postalAddress.value,
-      phoneNumber: phoneNumber.value,
-      website: website.value,
-    });
+  function handleDeleteUser() {
+    dispatch({ type: "REMOVE_USER", id: user.id });
+    alert("Nutzer wurde gelöscht");
   }
 
   return (
-    <form className="user-form">
-      <TextInput
-        id="username"
-        label="Username"
-        value={username.value}
-        error={username.error}
-        onChange={username.onChange}
-      />
-      <DateInput
-        id="dateOfBirth"
-        label="Geburtsdatum"
-        value={dateOfBirth.value}
-        error={dateOfBirth.error}
-        onChange={dateOfBirth.onChange}
-      />
-      <SelectInput
-        id="gender"
-        label="Geschlecht"
-        value={gender.value}
-        options={GENDER_OPTIONS}
-        error={gender.error}
-        onChange={gender.onChange}
-      />
-      <TextInput
-        id="email"
-        label="Email Adresse"
-        value={email.value}
-        error={email.error}
-        onChange={email.onChange}
-      />
-      <TextInput
-        id="postalAddress"
-        label="Post Adresse"
-        value={postalAddress.value}
-        error={postalAddress.error}
-        onChange={postalAddress.onChange}
-      />
-      <TextInput
-        id="phoneNumber"
-        label="Telefonnummer"
-        value={phoneNumber.value}
-        error={phoneNumber.error}
-        onChange={phoneNumber.onChange}
-      />
-      <TextInput
-        id="website"
-        label="Webseite"
-        value={website.value}
-        error={website.error}
-        onChange={website.onChange}
-      />
-      <SubmitButton onClick={handleSubmitUser} />
-    </form>
+    <article className="user-card">
+      <Link className="user-card__link" to={`/edit/${user.id}`}>
+        <img
+          className="user-card__image"
+          src={USER_IMAGE_URL}
+          alt={user.username}
+        />
+        <div className="user-card__content">
+          <h2 className="user-card__name">{user.username}</h2>
+          <div className="user-card__details">
+            <span className="user-card__detail">
+              <FaBirthdayCake /> {formattedDateOfBirth}
+            </span>
+            <span className="user-card__detail">
+              <FaAddressBook /> {user.postalAddress}
+            </span>
+            <span className="user-card__detail">
+              <FaVenusMars /> {user.gender}
+            </span>
+            <span className="user-card__detail">
+              <FaPhoneAlt /> {user.phoneNumber}
+            </span>
+            <span className="user-card__detail">
+              <FaEnvelope /> {user.email}
+            </span>
+            <span className="user-card__detail">
+              <FaGlobe /> {user.website}
+            </span>
+          </div>
+        </div>
+      </Link>
+      <DeleteButton onClick={handleDeleteUser} />
+    </article>
   );
 }
 
-export default UserForm;
+export default UserCard;
