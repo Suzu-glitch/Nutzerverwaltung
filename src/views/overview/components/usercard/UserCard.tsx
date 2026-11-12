@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   FaAddressBook,
   FaBirthdayCake,
@@ -22,34 +23,36 @@ function UserCard({ user }: UserCardProps) {
 
   return (
     <article className="user-card">
-      <img
-        className="user-card__image"
-        src={USER_IMAGE_URL}
-        alt={user.username}
-      />
-      <div className="user-card__content">
-        <h2 className="user-card__name">{user.username}</h2>
-        <div className="user-card__details">
-          <span className="user-card__detail">
-            <FaBirthdayCake /> {formattedDateOfBirth}
-          </span>
-          <span className="user-card__detail">
-            <FaAddressBook /> {user.postalAddress}
-          </span>
-          <span className="user-card__detail">
-            <FaVenusMars /> {user.gender}
-          </span>
-          <span className="user-card__detail">
-            <FaPhoneAlt /> {user.phoneNumber}
-          </span>
-          <span className="user-card__detail">
-            <FaEnvelope /> {user.email}
-          </span>
-          <span className="user-card__detail">
-            <FaGlobe /> {user.website}
-          </span>
+      <Link className="user-card__link" to={`/edit/${user.id}`}>
+        <img
+          className="user-card__image"
+          src={USER_IMAGE_URL}
+          alt={user.username}
+        />
+        <div className="user-card__content">
+          <h2 className="user-card__name">{user.username}</h2>
+          <div className="user-card__details">
+            <span className="user-card__detail">
+              <FaBirthdayCake /> {formattedDateOfBirth}
+            </span>
+            <span className="user-card__detail">
+              <FaAddressBook /> {user.postalAddress}
+            </span>
+            <span className="user-card__detail">
+              <FaVenusMars /> {user.gender}
+            </span>
+            <span className="user-card__detail">
+              <FaPhoneAlt /> {user.phoneNumber}
+            </span>
+            <span className="user-card__detail">
+              <FaEnvelope /> {user.email}
+            </span>
+            <span className="user-card__detail">
+              <FaGlobe /> {user.website}
+            </span>
+          </div>
         </div>
-      </div>
+      </Link>
       <DeleteButton />
     </article>
   );

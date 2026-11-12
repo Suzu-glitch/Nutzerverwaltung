@@ -9,17 +9,18 @@ const GENDER_OPTIONS = ["Männlich", "Weiblich", "Divers"];
 const MISSING_INFORMATION_MESSAGE = "Bitte Informationen ergänzen";
 
 type UserFormProps = {
+  user?: UserFormData;
   onSubmit: (userData: UserFormData) => void;
 };
 
-function UserForm({ onSubmit }: UserFormProps) {
-  const username = useFormInput("", true);
-  const dateOfBirth = useFormInput("", true);
-  const gender = useFormInput("", true);
-  const email = useFormInput("", true);
-  const postalAddress = useFormInput("", true);
-  const phoneNumber = useFormInput("", true);
-  const website = useFormInput("", true);
+function UserForm({ user, onSubmit }: UserFormProps) {
+  const username = useFormInput(user?.username ?? "", true);
+  const dateOfBirth = useFormInput(user?.dateOfBirth ?? "", true);
+  const gender = useFormInput(user?.gender ?? "", true);
+  const email = useFormInput(user?.email ?? "", true);
+  const postalAddress = useFormInput(user?.postalAddress ?? "", true);
+  const phoneNumber = useFormInput(user?.phoneNumber ?? "", true);
+  const website = useFormInput(user?.website ?? "", true);
 
   function handleSubmitUser() {
     const validationResults = [
