@@ -1,5 +1,9 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../../../../assets/logo.png";
+
+function getLinkClassName({ isActive }: { isActive: boolean }) {
+  return isActive ? "sidebar__link sidebar__link--active" : "sidebar__link";
+}
 
 function Sidebar() {
   return (
@@ -8,12 +12,12 @@ function Sidebar() {
         <img className="sidebar__logo" src={logo} alt="Logo" />
       </div>
       <div className="sidebar__body">
-        <Link className="sidebar__link" to="/overview">
+        <NavLink className={getLinkClassName} to="/overview">
           Übersicht
-        </Link>
-        <Link className="sidebar__link" to="/create">
+        </NavLink>
+        <NavLink className={getLinkClassName} to="/create">
           Erstellen
-        </Link>
+        </NavLink>
       </div>
     </nav>
   );

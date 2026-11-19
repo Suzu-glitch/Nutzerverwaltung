@@ -6,13 +6,18 @@ import type { User } from "../types/User";
 const STORAGE_KEY = "users";
 
 function loadUsers(): User[] {
-  const storedUsers = localStorage.getItem(STORAGE_KEY);
+  try {
+    const storedUsers = localStorage.getItem(STORAGE_KEY);
 
-  if (!storedUsers) {
+    if (!storedUsers) {
+      return [];
+    }
+
+    const parsedUsers = JSON.parse(storedUsers);
+    return Array.isArray(parsedUsers) ? parsedUsers : [];
+  } catch {
     return [];
   }
-
-  return JSON.parse(storedUsers);
 }
 
 type UserProviderProps = {

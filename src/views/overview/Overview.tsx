@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { UserContext } from "../../context/UserContext";
+import useUsers from "../../hooks/useUsers";
 import UserCard from "./components/usercard/UserCard";
 
 function Overview() {
-  const { users } = useContext(UserContext);
+  const { users } = useUsers();
 
   if (users.length === 0) {
     return <p>Noch keine Nutzer angelegt</p>;
