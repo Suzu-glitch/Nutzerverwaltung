@@ -1,8 +1,10 @@
 import useFormInput from "../../hooks/useFormInput";
+import useToast from "../../hooks/useToast";
 import TextInput from "../input/TextInput";
 import DateInput from "../input/DateInput";
 import SelectInput from "../input/SelectInput";
 import SubmitButton from "../button/SubmitButton";
+import CancelButton from "../button/CancelButton";
 import type { UserFormData } from "../../types/User";
 
 const GENDER_OPTIONS = ["Männlich", "Weiblich", "Divers"];
@@ -11,9 +13,11 @@ const MISSING_INFORMATION_MESSAGE = "Bitte Informationen ergänzen";
 type UserFormProps = {
   user?: UserFormData;
   onSubmit: (userData: UserFormData) => void;
+  onCancel?: () => void;
 };
 
-function UserForm({ user, onSubmit }: UserFormProps) {
+function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
+  const { showToast } = useToast();
   const username = useFormInput(user?.username ?? "", true);
   const dateOfBirth = useFormInput(user?.dateOfBirth ?? "", true);
   const gender = useFormInput(user?.gender ?? "", true);
@@ -35,7 +39,7 @@ function UserForm({ user, onSubmit }: UserFormProps) {
     const isFormValid = validationResults.every((isValid) => isValid);
 
     if (!isFormValid) {
-      alert(MISSING_INFORMATION_MESSAGE);
+      showToast(MISSING_INFORMATION_MESSAGE, "error");
       return;
     }
 
@@ -102,7 +106,10 @@ function UserForm({ user, onSubmit }: UserFormProps) {
         error={website.error}
         onChange={website.onChange}
       />
-      <SubmitButton onClick={handleSubmitUser} />
+      <div className="user-form__buttons">
+        <SubmitButton onClick={handleSubmitUser} />
+        {onCancel && <CancelButton onClick={onCancel} />}
+      </div>
     </form>
   );
 }

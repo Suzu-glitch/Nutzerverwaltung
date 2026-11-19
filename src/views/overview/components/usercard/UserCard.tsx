@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   FaAddressBook,
@@ -9,7 +8,8 @@ import {
   FaVenusMars,
 } from "react-icons/fa";
 import DeleteButton from "../../../../components/button/DeleteButton";
-import { UserContext } from "../../../../context/UserContext";
+import useToast from "../../../../hooks/useToast";
+import useUsers from "../../../../hooks/useUsers";
 import type { User } from "../../../../types/User";
 
 const USER_IMAGE_URL = "https://randomuser.me/api/portraits/men/75.jpg";
@@ -19,14 +19,23 @@ type UserCardProps = {
 };
 
 function UserCard({ user }: UserCardProps) {
-  const { dispatch } = useContext(UserContext);
+  const { dispatch } = useUsers();
+  const { showToast } = useToast();
   const formattedDateOfBirth = new Date(user.dateOfBirth).toLocaleDateString(
     "de-DE",
   );
 
   function handleDeleteUser() {
+    const isConfirmed = window.confirm(
+      `Nutzer "${user.username}" wirklich löschen?`,
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
     dispatch({ type: "REMOVE_USER", id: user.id });
-    alert("Nutzer wurde gelöscht");
+    showToast("Nutzer wurde gelöscht");
   }
 
   return (

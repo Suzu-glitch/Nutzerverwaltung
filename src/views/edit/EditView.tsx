@@ -1,12 +1,13 @@
-import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UserForm from "../../components/userform/UserForm";
-import { UserContext } from "../../context/UserContext";
+import useToast from "../../hooks/useToast";
+import useUsers from "../../hooks/useUsers";
 import type { UserFormData } from "../../types/User";
 
 function EditView() {
   const { id } = useParams();
-  const { users, dispatch } = useContext(UserContext);
+  const { users, dispatch } = useUsers();
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const user = users.find((currentUser) => currentUser.id === id);
 
@@ -21,11 +22,22 @@ function EditView() {
       type: "UPDATE_USER",
       user: { id: userId, ...userData },
     });
-    alert("Nutzer wurde aktualisiert");
+    showToast("Nutzer wurde aktualisiert");
     navigate("/overview");
   }
 
-  return <UserForm key={userId} user={user} onSubmit={handleUpdateUser} />;
+  function handleCancel() {
+    navigate("/overview");
+  }
+
+  return (
+    <UserForm
+      key={userId}
+      user={user}
+      onSubmit={handleUpdateUser}
+      onCancel={handleCancel}
+    />
+  );
 }
 
 export default EditView;

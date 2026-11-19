@@ -3,6 +3,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import ToastProvider from "./context/ToastProvider";
 import UserProvider from "./context/UserProvider";
 import Root from "./views/root/Root";
 import Overview from "./views/overview/Overview";
@@ -26,9 +27,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
+    <ToastProvider>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </ToastProvider>
   );
 }
 

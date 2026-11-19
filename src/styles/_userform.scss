@@ -5,6 +5,15 @@
   flex-direction: column;
   gap: 14px;
   max-width: 300px;
+
+  &__buttons {
+    display: flex;
+    gap: 8px;
+
+    button {
+      flex: 1;
+    }
+  }
 }
 
 .form-field {
@@ -39,4 +48,18 @@
   color: #ffffff;
   font-size: 12px;
   cursor: pointer;
+}
+
+.cancel-button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: $color-link;
+  color: $color-text;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-link-hover;
+  }
 }
