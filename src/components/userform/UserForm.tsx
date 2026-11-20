@@ -1,5 +1,12 @@
 import useFormInput from "../../hooks/useFormInput";
 import useToast from "../../hooks/useToast";
+import {
+  validateDigits,
+  validateEmail,
+  validateNotInFuture,
+  validatePostalCode,
+  validateRequired,
+} from "../../hooks/validators";
 import TextInput from "../input/TextInput";
 import DateInput from "../input/DateInput";
 import SelectInput from "../input/SelectInput";
@@ -8,7 +15,7 @@ import CancelButton from "../button/CancelButton";
 import type { UserFormData } from "../../types/User";
 
 const GENDER_OPTIONS = ["Männlich", "Weiblich", "Divers"];
-const MISSING_INFORMATION_MESSAGE = "Bitte Informationen ergänzen";
+const INVALID_INPUT_MESSAGE = "Bitte Eingaben prüfen";
 
 type UserFormProps = {
   user?: UserFormData;
@@ -18,13 +25,25 @@ type UserFormProps = {
 
 function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
   const { showToast } = useToast();
-  const username = useFormInput(user?.username ?? "", true);
-  const dateOfBirth = useFormInput(user?.dateOfBirth ?? "", true);
-  const gender = useFormInput(user?.gender ?? "", true);
-  const email = useFormInput(user?.email ?? "", true);
-  const postalAddress = useFormInput(user?.postalAddress ?? "", true);
-  const phoneNumber = useFormInput(user?.phoneNumber ?? "", true);
-  const website = useFormInput(user?.website ?? "", true);
+  const username = useFormInput(user?.username ?? "", [validateRequired]);
+  const dateOfBirth = useFormInput(user?.dateOfBirth ?? "", [
+    validateRequired,
+    validateNotInFuture,
+  ]);
+  const gender = useFormInput(user?.gender ?? "", [validateRequired]);
+  const email = useFormInput(user?.email ?? "", [
+    validateRequired,
+    validateEmail,
+  ]);
+  const postalAddress = useFormInput(user?.postalAddress ?? "", [
+    validateRequired,
+    validatePostalCode,
+  ]);
+  const phoneNumber = useFormInput(user?.phoneNumber ?? "", [
+    validateRequired,
+    validateDigits,
+  ]);
+  const website = useFormInput(user?.website ?? "");
 
   function handleSubmitUser() {
     const validationResults = [
@@ -39,7 +58,7 @@ function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
     const isFormValid = validationResults.every((isValid) => isValid);
 
     if (!isFormValid) {
-      showToast(MISSING_INFORMATION_MESSAGE, "error");
+      showToast(INVALID_INPUT_MESSAGE, "error");
       return;
     }
 
@@ -101,7 +120,7 @@ function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
       />
       <TextInput
         id="website"
-        label="Webseite"
+        label="Webseite (optional)"
         value={website.value}
         error={website.error}
         onChange={website.onChange}
