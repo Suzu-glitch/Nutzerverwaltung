@@ -1,5 +1,28 @@
+@use "variables" as *;
+
 .overview {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.overview-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 800px;
+
+  &__input,
+  &__select {
+    padding: 10px 12px;
+    border: 1px solid $color-border-light;
+    border-radius: 8px;
+    background-color: $color-input;
+    font-size: 14px;
+  }
+
+  &__input {
+    flex: 1;
+    min-width: 200px;
+  }
 }
