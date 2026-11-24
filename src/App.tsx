@@ -11,19 +11,22 @@ import CreateView from "./views/create/CreateView";
 import EditView from "./views/edit/EditView";
 import ErrorPage from "./views/error/ErrorPage";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    children: [
-      { index: true, element: <Navigate to="/overview" replace /> },
-      { path: "/overview", element: <Overview /> },
-      { path: "/create", element: <CreateView /> },
-      { path: "/edit/:id", element: <EditView /> },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Root />,
+      errorElement: <ErrorPage />,
+      children: [
+        { index: true, element: <Navigate to="/overview" replace /> },
+        { path: "/overview", element: <Overview /> },
+        { path: "/create", element: <CreateView /> },
+        { path: "/edit/:id", element: <EditView /> },
+      ],
+    },
+  ],
+  { basename: import.meta.env.BASE_URL },
+);
 
 function App() {
   return (
